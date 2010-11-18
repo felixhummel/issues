@@ -15,16 +15,10 @@ $.couch.app(function(app) {
   $("#profile").evently("profile", app);
   
   // setup the account widget
-  // $("#account").evently("account", app);  
+  $("#account").evently("account", app);  
   
   // trigger the profile widget's events corresponding to the account widget
-  // $.evently.connect($("#account"), $("#profile"), ["loggedIn", "loggedOut"]);
-  var fakeUser = {
-    userCtx : {
-      name : "Anonymous"
-    }
-  };
-  $("#profile").trigger("profileReady", [fakeUser])
+  $.evently.connect($("#account"), $("#profile"), ["loggedIn", "loggedOut"]);
   
   // now set up the main list of tasks
   var tasks = app.ddoc.evently.tasks;
@@ -33,7 +27,6 @@ $.couch.app(function(app) {
   tasks.mentions = $.extend(true, {}, tasks.recent, tasks.mentions);
   tasks.users = $.extend(true, {}, tasks.recent, tasks.users);
   
-  $.log(tasks)
   $("#tasks").evently(tasks, app);
   $.pathbinder.onChange(function(path) {
     $("#current-path").text(path);
