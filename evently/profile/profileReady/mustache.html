@@ -4,9 +4,19 @@
     {{nickname}}
   </div>
 </div>
+<!--
 <form>
   <textarea name="body" cols="80" rows="3"></textarea>
   <br>
   <input type="submit" value="New Task →">
+</form>
+-->
+<form>
+  <ol>
+    <li><label>Title: <input type="text" name="title" size=60 value=""></label></li>
+    <li><label>Steps to reproduce: <textarea name="steps" value=""></textarea></label></li>
+    <li><label>What you expected to see: <textarea name="expected" value=""></textarea></label></li>
+    <li><label>What you saw instead: <textarea name="actual" value=""></textarea></label></li>
+  </ol>
 </form>
 <br class="clear">
