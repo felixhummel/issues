@@ -11,6 +11,9 @@ h1 {
 h2 {
   color:#222;
 }
+label {
+  display: block;
+}
 
 #current-path {
   font-weight:normal;

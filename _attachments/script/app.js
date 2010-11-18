@@ -1,6 +1,8 @@
 // $.couch.app() loads the design document from the server and 
 // then calls our application.
 $.couch.app(function(app) {  
+  $("#content").evently("main", app);
+  /*
   // An evently widget that displays a tag cloud which is updated when 
   // the underlying data changes. The code for this widget is stored 
   // in the evently/tagcloud directory.
@@ -16,6 +18,7 @@ $.couch.app(function(app) {
   
   // setup the account widget
   $("#account").evently("account", app);  
+  $("#content").evently("content", app);  
   
   // trigger the profile widget's events corresponding to the account widget
   $.evently.connect($("#account"), $("#profile"), ["loggedIn", "loggedOut"]);
@@ -31,7 +34,8 @@ $.couch.app(function(app) {
   $.pathbinder.onChange(function(path) {
     $("#current-path").text(path);
   });
-  $.pathbinder.begin("/");
+  */
+  $.pathbinder.begin("/list");
 });
 
 // todo move to a plugin somewhere

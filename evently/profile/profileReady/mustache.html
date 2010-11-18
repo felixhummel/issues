@@ -1,8 +1,4 @@
-<div class="avatar">
-  {{#avatar_url}}<img src="{{{avatar_url}}}"/>{{/avatar_url}}
-  <div class="name">
-    {{nickname}}
-  </div>
+<div class="name">{{nickname}}</div>
 </div>
 <!--
 <form>
@@ -13,10 +9,10 @@
 -->
 <form>
   <ol>
-    <li><label>Title: <input type="text" name="title" size=60 value=""></label></li>
-    <li><label>Steps to reproduce: <textarea name="steps" value=""></textarea></label></li>
-    <li><label>What you expected to see: <textarea name="expected" value=""></textarea></label></li>
-    <li><label>What you saw instead: <textarea name="actual" value=""></textarea></label></li>
+    <li><label for="title">Title:</label><input type="text" name="title" size=60 value="" /></li>
+    <li><label for="steps">Steps to reproduce:</label><textarea name="steps" value=""></textarea></li>
+    <li><label for="expected">What you expected to see:</label><textarea name="expected" value=""></textarea></li>
+    <li><label for="actual">What you saw instead:</label><textarea name="actual" value=""></textarea></li>
   </ol>
 </form>
 <br class="clear">
