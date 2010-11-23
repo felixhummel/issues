@@ -1,5 +1,5 @@
 function(doc) {
-  if (doc.type == "task" && doc.state != "done") {
+  if (doc.type == "issue") {
     emit(doc.created_at, doc)
   }
 }
