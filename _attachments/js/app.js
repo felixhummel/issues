@@ -3,5 +3,5 @@ $.couch.app(function(app) {
   $.pathbinder.onChange(function(path) {
     $("#current-path").text(path);
   });
-  $.pathbinder.begin("/list");
+  $.pathbinder.begin("/");
 });
