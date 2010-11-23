@@ -1,3 +1,4 @@
-function(e, params) {
-  return {"id": params.id}
+function(resp, cb, params) {
+  var doc = resp.rows[0].value;
+  return doc;
 }
