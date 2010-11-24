@@ -1,3 +1,3 @@
 function() {
-  $("#replies", this).evently("replies", $$(this).app);
+  //$("#replies", this).evently("replies", $$(this).app);
 };

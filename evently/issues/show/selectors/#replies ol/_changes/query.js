@@ -2,6 +2,7 @@ function(e, params) {
   var id = $("#id").text();
   return {
     view : "replies",
-    key : id
+    key : id,
+    type : "newRows"
   };
 }
