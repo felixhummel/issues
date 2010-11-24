@@ -1,11 +1,14 @@
 <h1>{{title}}</h1>
-<div id="id">{{_id}}</div>
-<div id="created_at">{{created_at}}</div>
-<div id="author">{{author}}</div>
-<div id="steps">{{steps}}</div>
-<div id="expected">{{expected}}</div>
-<div id="actual">{{actual}}</div>
-<div id="replies"><ol></ol></div>
+<ol>
+  <li>id: <div id="id">{{_id}}</div></li>
+  <li>created_at: <div id="created_at">{{created_at}}</div></li>
+  <li>author: <div id="author">{{author}}</div></li>
+  <li>status: <div id="status">{{status}}</div></li>
+  <li>steps: <div id="steps">{{steps}}</div></li>
+  <li>expected: <div id="expected">{{expected}}</div></li>
+  <li>actual: <div id="actual">{{actual}}</div></li>
+  <li>replies: <div id="replies"><ol></ol></div></li>
+</ol>
 <form>
   <fieldset>
     <ol>
