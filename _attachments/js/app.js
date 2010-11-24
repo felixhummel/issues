@@ -1,8 +1,5 @@
 $.couch.app(function(app) {  
-  $("#content").evently("issues", app);
+  $("#profile").evently("profile", app);
   $("#account").evently("account", app);
-  $.pathbinder.onChange(function(path) {
-    $("#current-path").text(path);
-  });
-  $.pathbinder.begin("/");
+  $.evently.connect($("#account"), $("#profile"), ["loggedIn", "loggedOut"]);
 });

@@ -1,4 +1,3 @@
 function() {
-  var replies = $("#replies", this);
-  replies.evently("replies", $$(this).app);
+  $("#replies", this).evently("replies", $$(this).app);
 };
