@@ -6,21 +6,18 @@
 <div id="expected">{{expected}}</div>
 <div id="actual">{{actual}}</div>
 <div id="replies"><ol></ol></div>
-<form id="statusform">
-  <ol>
-    <li>
-      <label for="status">Status:</label>
-      <select name="status" selected="open">
-        <option>open</option>
-        <option>fixed</option>
-      </select>
-    </li>
-    <li><input type="submit" value="OK"></li>
-  </ol>
-</form>
-<form id="replyform">
-  <ol>
-    <li><label for="reply">Reply:</label><textarea value="" name="reply"></textarea></li>
-    <li><input type="submit" value="OK"></li>
-  </ol>
+<form>
+  <fieldset>
+    <ol>
+      <li><label for="reply">Reply:</label><textarea value="" name="reply"></textarea></li>
+      <li>
+        <label for="status">Change status:</label>
+        <select name="status" selected="open">
+          <option>open</option>
+          <option>fixed</option>
+        </select>
+      </li>
+      <li><input type="submit" value="OK"></li>
+    </ol>
+  </fieldset>
 </form>
