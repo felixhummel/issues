@@ -3,4 +3,5 @@ function(resp) {
   $$("#content").current = resp.rows[0].value;
   var status = $$("#content").current.status;
   $("select", this).val(status);
+  $("table", this).css('border-left', '2px solid #3E83C9');
 };

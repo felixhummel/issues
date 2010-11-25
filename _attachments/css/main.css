@@ -55,3 +55,37 @@ table .even {
 table .over {
   background-color: #BCD4EC;
 }
+span {
+  padding: 0;
+}
+#replies {
+  margin: 0;
+  padding 0;
+}
+#replies ol {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+#replies ol li {
+  margin: 0;
+  padding: 0;
+}
+#replies ol li p {
+  margin-top: 10px;
+  padding: 0;
+}
+#replies ol li p.heading {
+  font-style: bold;
+}
+#replies ol li p.heading a {
+  padding: 0;
+}
+#replies ol li p .author {
+  margin: 0;
+  padding: 0;
+}
+#replies ol li p.text {
+  margin: 0;
+  padding-left: 1em;
+}
