@@ -29,3 +29,29 @@ label {
   clear:left;
 }
 
+table {
+  border-collapse: collapse;
+}
+td {
+	padding: 6px 11px;
+	border-bottom: 1px solid #95bce2;
+	vertical-align: top;
+}
+td * {
+	padding: 6px 11px;
+}
+th {
+	background: #3e83c9;
+	color: #fff;
+	font-weight: bold;
+	padding: 2px 11px;
+	text-align: left;
+	border-right: 1px solid #fff;
+	line-height: 1.2;
+}
+table .even {
+  background-color: #ECF6FC;
+}
+table .over {
+  background-color: #BCD4EC;
+}
