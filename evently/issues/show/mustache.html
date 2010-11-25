@@ -1,14 +1,16 @@
 <h1>{{title}}</h1>
-<ol>
-  <li>id: <div id="id">{{_id}}</div></li>
-  <li>created_at: <div id="created_at">{{created_at}}</div></li>
-  <li>assigned_to: <div id="assigned_to">{{assigned_to}}</div></li>
-  <li>status: <div id="status">{{status}}</div></li>
-  <li>steps: <div id="steps">{{steps}}</div></li>
-  <li>expected: <div id="expected">{{expected}}</div></li>
-  <li>actual: <div id="actual">{{actual}}</div></li>
-  <li>replies: <div id="replies"><ol></ol></div></li>
-</ol>
+<table>
+  <tbody>
+    <tr><td>id</td><td><div id="id">{{_id}}</div></td></tr>
+    <tr><td>Created</td><td><div id="created_at">{{created_at}}</div></td></tr>
+    <tr><td>Assigned to</td><td><div id="assigned_to">{{assigned_to}}</div></td></tr>
+    <tr><td>Status</td><td><div id="status">{{status}}</div></td></tr>
+    <tr><td>Steps taken</td><td><div id="steps">{{steps}}</div></td></tr>
+    <tr><td>Expected</td><td><div id="expected">{{expected}}</div></td></tr>
+    <tr><td>Actual</td><td><div id="actual">{{actual}}</div></td></tr>
+    <tr><td>Comments</td><td><div id="replies"><ol></ol></div></td></tr>
+  </tbody>
+</table>
 <form>
   <fieldset>
     <ol>
