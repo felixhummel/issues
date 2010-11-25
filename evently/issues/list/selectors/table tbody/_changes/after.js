@@ -5,6 +5,6 @@ function(resp, e) {
     var link = $(this).attr('link');
     window.location = link;
   });
-  new_row.mouseover(function(){$(this).addClass("over");}).mouseout(function(){$(this).removeClass("over");});
+  new_row.mouseover(function(){$(this).addClass("over");}).mouseout(function(){$(this).removeClass("over");}).children().css('cursor', 'pointer');
   $("tbody tr:even").addClass("even");
 }
