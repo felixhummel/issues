@@ -43,6 +43,9 @@ label {
 #account {
   float:right;
 }
+#account label {
+  display: inline;
+}
 #content {
   clear:both;
   padding-left: 2em;
