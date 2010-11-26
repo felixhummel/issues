@@ -3,32 +3,38 @@ body {
   margin:0;
   padding:4px;
 }
-
 h1 {
   margin:0;
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 20px;
 }
-
+h1 a {
+  color: black;
+}
 label {
   display: block;
 }
-
+#account label {
+  display: inline;
+}
+#header {
+  border-bottom: 1px solid black;
+  padding-bottom: 20px;
+}
 #current-path {
   font-weight:normal;
   color:#555;
 }
-
 #account {
   float:right;
 }
-
 #content {
   clear:both;
 }
-
 .clear {
   clear:left;
 }
-
 table {
   border-collapse: collapse;
 }
@@ -37,9 +43,10 @@ td {
 	border-bottom: 1px solid #95bce2;
 	vertical-align: top;
 }
+/*
 td * {
 	padding: 6px 11px;
-}
+}*/
 th {
 	background: #3e83c9;
 	color: #fff;
@@ -60,7 +67,7 @@ span {
 }
 #replies {
   margin: 0;
-  padding 0;
+  padding: 0;
 }
 #replies ol {
   margin: 0;
@@ -88,4 +95,32 @@ span {
 #replies ol li p.text {
   margin: 0;
   padding-left: 1em;
+}
+#replies form {
+  margin-top: 1em;
+  padding-top: 10px;
+}
+#replies form li {
+  padding-top: 10px;
+}
+#replies form textarea {
+  width: 400px;
+  height: 200px;
+}
+#replies form fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+#list_table {
+  margin-left: 1em;
+  margin-top: 1em;
+}
+#show_table {
+  margin-left: 1em;
+  margin-top: 1em;
+}
+#btn_new {
+  margin-left: 1em;
+  margin-top: 1em;
 }
