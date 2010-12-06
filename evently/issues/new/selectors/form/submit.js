@@ -9,5 +9,6 @@ function() {
       form[0].reset();
     }
   });
+  $.pathbinder.go("/");
   return false;
 }
