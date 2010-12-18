@@ -1,0 +1,9 @@
+Views
+=====
+Try those:
+
+http://localhost:5984/issues/_design/issues/_list/tabular/all
+http://localhost:5984/issues/_design/issues/_list/tabular/assigned_to?key=%22user1%22
+http://localhost:5984/issues/_design/issues/_list/tabular/status?key=%22open%22
+
+.. vim: set ft=rst :
