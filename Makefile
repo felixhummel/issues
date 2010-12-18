@@ -2,7 +2,7 @@ AUTOPUSH_DELAY = 1 # seconds
 
 default: autopush
 
-autopush:
+autopush: push
 	couchapp autopush --update-delay $(AUTOPUSH_DELAY) . default
 
 push:
