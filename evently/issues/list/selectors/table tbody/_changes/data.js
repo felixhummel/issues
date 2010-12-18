@@ -3,6 +3,7 @@ function(r) {
   return {
     text: doc.text,
     created_at: $.prettyDate2(doc.created_at),
-    id: doc._id
+    id: doc._id,
+    status: doc.status
   };
 }
