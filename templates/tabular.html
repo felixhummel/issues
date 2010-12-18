@@ -1,6 +1,15 @@
-<table>
-  <tr><th>When</th><th>What</th><th>Status</th></tr>
-  {{#issues}}
-  <tr><td>{{created_at}}</td><td>{{text}}</td><th>{{status}}</th></tr>
-  {{/issues}}
-</table>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Issues</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+  </head>
+  <body>
+    <table>
+      <tr><th>When</th><th>What</th><th>Status</th></tr>
+      {{#issues}}
+      <tr><td>{{created_at}}</td><td>{{text}}</td><th>{{status}}</th></tr>
+      {{/issues}}
+    </table>
+  </body>
+</html>
