@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Issues - Edit</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+  </head>
+  <body>
+    <p>{{created_at}} - {{status}}</p>
+    <p>{{text}}</p>
+    <button>Remove</button>
+  </body>
+  {{>scripts}}
+  <script type="text/javascript" charset="utf-8">
+    $.couch.app(function(app) {
+      var path = app.require("vendor/couchapp/lib/path").init(app.req);
+      $.log({{{doc}}});
+    });
+  </script>
+
+</html>
