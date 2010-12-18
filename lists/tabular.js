@@ -14,7 +14,6 @@ function(head, req) {
     while(row = getRow()) {
       issues.push(row.value);
     }
-    log(issues);
     return Mustache.to_html(ddoc.templates.tabular, {issues: issues});
   });
 }
