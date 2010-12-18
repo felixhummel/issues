@@ -1,5 +1,5 @@
 {
-  "view" : "issues",
+  "view" : "by_date",
   "limit" : 25,
   "descending" : false,
   "type" : "newRows"

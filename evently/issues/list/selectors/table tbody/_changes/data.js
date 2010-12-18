@@ -1,8 +1,8 @@
 function(r) {
-  var v = r.value;
+  var doc = r.value;
   return {
-    title: v.title,
-    created_at: $.prettyDate2(v.created_at),
-    id: v._id
+    text: doc.text,
+    created_at: $.prettyDate2(doc.created_at),
+    id: doc._id
   };
 }
