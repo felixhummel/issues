@@ -2,8 +2,13 @@ Views
 =====
 Try those:
 
-http://localhost:5984/issues/_design/issues/_list/tabular/all
-http://localhost:5984/issues/_design/issues/_list/tabular/assigned_to?key=%22user1%22
-http://localhost:5984/issues/_design/issues/_list/tabular/status?key=%22open%22
+Sorted by date:
+    http://localhost:5984/issues/_design/issues/_list/tabular/by_date
+Sorted by date in a certain period of time:
+    http://localhost:5984/issues/_design/issues/_list/tabular/by_date?startkey=%222010-11-16T14:51:00.000Z%22&endkey=%222010-11-19T18:00:00.000Z%22
+Only those assigned to user1:
+    http://localhost:5984/issues/_design/issues/_list/tabular/assigned_to?key=%22user1%22
+Open issues:
+    http://localhost:5984/issues/_design/issues/_list/tabular/status?key=%22open%22
 
 .. vim: set ft=rst :
