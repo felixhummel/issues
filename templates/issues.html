@@ -1,3 +1,6 @@
-{{#issues}}
-  {{issue}}</br>
-{{/issues}}
+<table>
+  <tr><th>When</th><th>What</th><th>Status</th></tr>
+  {{#issues}}
+  <tr><td>{{created_at}}</td><td>{{text}}</td><th>{{status}}</th></tr>
+  {{/issues}}
+</table>

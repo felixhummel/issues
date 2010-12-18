@@ -12,7 +12,7 @@ function(head, req) {
       }
     });
     while(row = getRow()) {
-      issues.push({issue: toJSON(row.value)});
+      issues.push(row.value);
     }
     log(issues);
     return Mustache.to_html(ddoc.templates.issues, {issues: issues});
