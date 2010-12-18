@@ -31,6 +31,14 @@ form li {
 label {
   display: block;
 }
+div .card {
+  width: 250px;
+  height: 150px;
+  display: inline-table;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid blue;
+}
 #header {
   border-bottom: 1px solid black;
   padding-bottom:1em;
