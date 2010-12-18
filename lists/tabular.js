@@ -15,6 +15,6 @@ function(head, req) {
       issues.push(row.value);
     }
     log(issues);
-    return Mustache.to_html(ddoc.templates.issues, {issues: issues});
+    return Mustache.to_html(ddoc.templates.tabular, {issues: issues});
   });
 }
