@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
+    <p id="msg" stlye="display: none;"></p>
     <div id="thisDoc" style="float: left;">
       <h1>Issue {{id}}, rev {{rev}}</h1>
       <h2>Created at</h2>
@@ -18,10 +19,12 @@
         </select>
       </p>
       <h2>Text:</h2>
-      <p>{{text}}</p>
-      <h2>Options</h2>
-      <button id="ok">Submit</button>
-      <button id="delete">Delete</button>
+      <textarea id="text">{{text}}</textarea>
+      <div id="options">
+        <h2>Options</h2>
+        <button id="ok">Submit</button>
+        <button id="delete">Delete</button>
+      </div>
     </div>
     <div id="otherDoc" style="float: right; display: none">
     </div>
@@ -32,15 +35,16 @@
       var path = app.require("vendor/couchapp/lib/path").init(app.req);
       var doc = {{{doc}}},  // parse doc from string
         otherDoc = {}, // conflicting document
+        userChangedStuff = false,  // user changed some input field
         sendMsg = function(msg) {
           $('#msg').hide().text(msg).fadeIn();
         },
         beforeMerge = function() {
-          $("#ok").hide();
+          $("#options").hide();
         }
         afterMerge = function() {
           window.location = window.location;
-          $("#ok").show();
+          $("#options").show();
         },
         conflictHandler = function(status, error, reason) {
           if (error == 'conflict') {
@@ -56,9 +60,9 @@
                   +'<h2>Created at</h2>'
                   +'<p>'+otherDoc.created_at+'</p>'
                   +'<h2>Status:</h2>'
-                  +'<p>'+otherDoc.status+'</p>'
+                  +'<select disabled="disabled"><option>'+otherDoc.status+'</select></option>'
                   +'<h2>Text:</h2>'
-                  +'<p>'+otherDoc.text+'</p>'
+                  +'<textarea disabled="disabled">'+otherDoc.text+'</textarea>'
                 )
                 .show();
                 $("#thisDoc").prepend('<button id="btnThis">Take this</button>');
@@ -105,9 +109,15 @@
       $("#status")
       .val(doc.status)
       .change(function() {
-        doc.status = $(this).val();
+        userChangedStuff = true;
+      });
+      $("#text")
+      .change(function() {
+        userChangedStuff = true;
       });
       $("#ok").click(function() {
+        doc.status = $("#status").val();
+        doc.text = $("#text").val();
         app.db.saveDoc(doc, {
           success: function(resp) {
             sendMsg('Saved rev '+resp.rev);
