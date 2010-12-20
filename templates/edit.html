@@ -21,8 +21,16 @@
       var doc = {{{doc}}},  // parse doc from string
         sendMsg = function(msg) {
           $('#msg').hide().text(msg).fadeIn();
-        };
-      ;
+        },
+        onError = function(status, error, reason) {
+          if (error == 'conflict') {
+            // get other doc, display
+            $.log('onError called');
+          } else {
+            alert("Error " + reason)
+          }
+        }
+      ; // END var
       delete doc._revisions;  // else: update conflict
       $("#remove").click(function() {
         $.log('remove clicked', doc);
@@ -34,7 +42,8 @@
           app.db.saveDoc(doc, {
             success: function(resp) {
               sendMsg('Saved rev '+resp.rev);
-            }
+            },
+            error: onError
           });
         });
     });
