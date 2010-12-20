@@ -7,8 +7,9 @@ function(doc, req) {
     scripts: {},
     created_at: doc.created_at,
     status: doc.status,
+    id: doc._id,
     text: doc.text,
-    rev: doc._rev,
+    rev: doc._rev.split('-')[0],
     statuses:  [
       { option: 'open' },
       { option: 'closed' }
