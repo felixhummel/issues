@@ -18,15 +18,17 @@
   <script type="text/javascript" charset="utf-8">
     $.couch.app(function(app) {
       var path = app.require("vendor/couchapp/lib/path").init(app.req),
-        doc = {{{doc}}};  // {{{s}}} parses json string s
+        doc = {{{doc}}},  // {{{s}}} parses json string s
+        statusChanged = false;
       $$('body').doc = doc;
-      alert('current status: '+doc.status);
       $("#remove").click(function() {
-        alert('remove clicked');
+        $.log('remove clicked');
       });
-      $("#status").change(function() {
-        alert('status changed');
-      });
+      $("#status")
+        .val(doc.status)
+        .change(function() {
+          $.log('status changed');
+        });
     });
   </script>
 
