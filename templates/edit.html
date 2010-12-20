@@ -36,17 +36,29 @@
       var doc = {{{doc}}},  // parse doc from string
         otherDoc = {}, // conflicting document
         userChangedStuff = false,  // user changed some input field
-        saveOK = function(resp) {
-          $("#rev").text(prettyRev(resp.rev)); 
-        }
+        updateCurrentDocFromUserInput = function() {
+          if (userChangedStuff) {
+            doc.status = $("#status").val();
+            doc.text = $("#text").val();
+          }
+        },
         prettyRev = function(r) {
           return r.split && r.split('-')[0] || 'undefined';
+        },
+        saveCurrentDoc = function(errorHandler) {
+          var onError = errorHandler || conflictHandler;
+          app.db.saveDoc(doc, {
+            success: function(resp) {
+              $("#rev").text(prettyRev(resp.rev)); 
+            },
+            error: onError
+          });
         },
         beforeMerge = function() {
           $("#options").hide();
         }
         afterMerge = function() {
-          window.location = window.location;
+          window.location.reload();
           $("#options").show();
         },
         conflictHandler = function(status, error, reason) {
@@ -72,18 +84,17 @@
                 $("#otherDoc").prepend('<button id="btnThat">Take that</button>');
                 // click handlers for THIS and OTHER
                 $("#btnThis").click(function() {
-                  // take revision from other and commit
+                  // take revision from other
                   doc._rev = otherDoc._rev;
-                  app.db.saveDoc(doc, {
-                    success: function(resp) {
-                      saveOK(resp);
-                    },
-                    error: conflictHandler
-                  });
+                  updateCurrentDocFromUserInput();
+                  saveCurrentDoc();
                   afterMerge();
                 });
                 $("#btnThat").click(function() {
-                  // could do this ajax style, but reload is sufficient for now
+                  // tries to save otherDoc
+                  doc = otherDoc;
+                  // if yet another commit has been made we will recurse
+                  saveCurrentDoc();
                   afterMerge();
                 });
               },
@@ -119,14 +130,8 @@
         userChangedStuff = true;
       });
       $("#ok").click(function() {
-        doc.status = $("#status").val();
-        doc.text = $("#text").val();
-        app.db.saveDoc(doc, {
-          success: function(resp) {
-            saveOK(resp);
-          },
-          error: conflictHandler
-        });
+        updateCurrentDocFromUserInput();
+        saveCurrentDoc();
       });
     });
   </script>
