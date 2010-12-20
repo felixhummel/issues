@@ -49,7 +49,7 @@
             app.db.openDoc(doc._id, {
               success: function(d) {
                 otherDoc = d;
-                // xxx refactor: use template to show doc
+                // xxx refactor: use partial template to show doc
                 $('#otherDoc')
                 .html(
                   '<h1>Issue '+otherDoc._id+', rev '+otherDoc._rev.split('-')[0]+'</h1>'
@@ -63,6 +63,7 @@
                 .show();
                 $("#thisDoc").prepend('<button id="btnThis">Take this</button>');
                 $("#otherDoc").prepend('<button id="btnThat">Take that</button>');
+                // click handlers for THIS and OTHER
                 $("#btnThis").click(function() {
                   // take revision from other and commit
                   doc._rev = otherDoc._rev;
