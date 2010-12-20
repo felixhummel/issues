@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
-    <div id="currentIssue" style="float: left">
+    <div id="thisDoc" style="float: left;">
       <h1>Issue {{id}}, rev {{rev}}</h1>
       <h2>Created at</h2>
       <p>{{created_at}}</p>
@@ -20,10 +20,10 @@
       <h2>Text:</h2>
       <p>{{text}}</p>
       <h2>Options</h2>
+      <button id="ok">Submit Changes</button>
       <button id="remove">Remove</button>
     </div>
     <div id="otherDoc" style="float: right; display: none">
-      <h1>Other</h1>
     </div>
   </body>
   {{>scripts}}
@@ -34,13 +34,20 @@
         sendMsg = function(msg) {
           $('#msg').hide().text(msg).fadeIn();
         },
+        beforeMerge = function() {
+          $("#ok").hide();
+        }
+        afterMerge = function() {
+          window.location = window.location;
+          $("#ok").show();
+        },
         conflictHandler = function(status, error, reason) {
           if (error == 'conflict') {
+            beforeMerge();
             // get other doc, display
             app.db.openDoc(doc._id, {
               success: function(d) {
                 otherDoc = d;
-                $.log('got other', otherDoc);
                 // xxx refactor: use template to show doc
                 $('#otherDoc')
                 .html(
@@ -53,6 +60,23 @@
                   +'<p>'+otherDoc.text+'</p>'
                 )
                 .show();
+                $("#thisDoc").prepend('<button id="btnThis">Take this</button>');
+                $("#otherDoc").prepend('<button id="btnThat">Take that</button>');
+                $("#btnThis").click(function() {
+                  // take revision from other and commit
+                  doc._rev = otherDoc._rev;
+                  app.db.saveDoc(doc, {
+                    success: function(resp) {
+                      sendMsg('Saved rev '+resp.rev);
+                    },
+                    error: conflictHandler
+                  });
+                  afterMerge();
+                });
+                $("#btnThat").click(function() {
+                  // could do this ajax style, but reload is sufficient for now
+                  afterMerge();
+                });
               },
               error: function() {
                 alert('Error getting other document');
@@ -63,7 +87,7 @@
           }
         },
         clearError = function() {
-          $("#otherDoc").hide();
+          $("#otherDoc").html('');
         }
       ; // END var
       delete doc._revisions;  // else: update conflict
@@ -74,6 +98,8 @@
       .val(doc.status)
       .change(function() {
         doc.status = $(this).val();
+      });
+      $("#ok").click(function() {
         app.db.saveDoc(doc, {
           success: function(resp) {
             sendMsg('Saved rev '+resp.rev);
@@ -81,7 +107,6 @@
           error: conflictHandler
         });
       });
-      conflictHandler(1,'conflict');  // xxx
     });
   </script>
 
