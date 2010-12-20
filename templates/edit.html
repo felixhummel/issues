@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
+    <p id="msg" style="display: none;"></p>
     <p>{{created_at}}</p>
     <select id="status">
       {{#statuses}}
@@ -12,23 +13,34 @@
       {{/statuses}}{{status}}
     </select>
     <p>{{text}}</p>
+    <button id="ok">OK</button>
     <button id="remove">Remove</button>
   </body>
   {{>scripts}}
   <script type="text/javascript" charset="utf-8">
     $.couch.app(function(app) {
-      var path = app.require("vendor/couchapp/lib/path").init(app.req),
-        doc = {{{doc}}},  // {{{s}}} parses json string s
-        statusChanged = false;
-      $$('body').doc = doc;
+      var doc = {{{doc}}},  // parse doc from string
+        sendMsg = function(msg) {
+          $('#msg').hide().text(msg).fadeIn();
+        };
+      ;
+      delete doc._revisions;  // else: update conflict
       $("#remove").click(function() {
-        $.log('remove clicked');
+        $.log('remove clicked', doc);
       });
       $("#status")
         .val(doc.status)
         .change(function() {
-          $.log('status changed');
+          doc.status = $(this).val();
         });
+      $("#ok").click(function() {
+        app.db.saveDoc(doc, {
+          success: function() {
+            sendMsg('OK');
+          }
+        });
+        return false;
+      });
     });
   </script>
 
