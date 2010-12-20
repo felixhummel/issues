@@ -19,13 +19,19 @@
   <script type="text/javascript" charset="utf-8">
     $.couch.app(function(app) {
       var doc = {{{doc}}},  // parse doc from string
+        otherDoc = {}, // conflicting document
         sendMsg = function(msg) {
           $('#msg').hide().text(msg).fadeIn();
         },
         onError = function(status, error, reason) {
           if (error == 'conflict') {
             // get other doc, display
-            $.log('onError called');
+            app.db.openDoc(doc._id, {
+              success: function(d) {
+                $.log('got other');
+                otherDoc = d;
+              }
+            });
           } else {
             alert("Error " + reason)
           }
