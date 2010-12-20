@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
-    <p id="msg" style="display: none;"></p>
+    <p id="msg" style="float: right">Initial revision: {{rev}}</p>
     <p>{{created_at}}</p>
     <select id="status">
       {{#statuses}}
@@ -13,7 +13,6 @@
       {{/statuses}}{{status}}
     </select>
     <p>{{text}}</p>
-    <button id="ok">OK</button>
     <button id="remove">Remove</button>
   </body>
   {{>scripts}}
@@ -32,15 +31,12 @@
         .val(doc.status)
         .change(function() {
           doc.status = $(this).val();
+          app.db.saveDoc(doc, {
+            success: function(resp) {
+              sendMsg('Saved rev '+resp.rev);
+            }
+          });
         });
-      $("#ok").click(function() {
-        app.db.saveDoc(doc, {
-          success: function() {
-            sendMsg('OK');
-          }
-        });
-        return false;
-      });
     });
   </script>
 

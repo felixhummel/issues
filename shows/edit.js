@@ -8,6 +8,7 @@ function(doc, req) {
     created_at: doc.created_at,
     status: doc.status,
     text: doc.text,
+    rev: doc._rev,
     statuses:  [
       { option: 'open' },
       { option: 'closed' }
