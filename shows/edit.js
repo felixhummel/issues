@@ -8,8 +8,12 @@ function(doc, req) {
     created_at: doc.created_at,
     status: doc.status,
     text: doc.text,
+    statuses:  [
+      { option: 'open' },
+      { option: 'closed' }
+    ],
     doc: JSON.stringify(doc)
-  }
+  };
 
   return Mustache.to_html(ddoc.templates.edit, data, ddoc.templates.partials);
 }

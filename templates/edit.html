@@ -5,15 +5,28 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
-    <p>{{created_at}} - {{status}}</p>
+    <p>{{created_at}}</p>
+    <select id="status">
+      {{#statuses}}
+      <option>{{option}}</option>
+      {{/statuses}}{{status}}
+    </select>
     <p>{{text}}</p>
-    <button>Remove</button>
+    <button id="remove">Remove</button>
   </body>
   {{>scripts}}
   <script type="text/javascript" charset="utf-8">
     $.couch.app(function(app) {
-      var path = app.require("vendor/couchapp/lib/path").init(app.req);
-      $.log({{{doc}}});
+      var path = app.require("vendor/couchapp/lib/path").init(app.req),
+        doc = {{{doc}}};  // {{{s}}} parses json string s
+      $$('body').doc = doc;
+      alert('current status: '+doc.status);
+      $("#remove").click(function() {
+        alert('remove clicked');
+      });
+      $("#status").change(function() {
+        alert('status changed');
+      });
     });
   </script>
 
