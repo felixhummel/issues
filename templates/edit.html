@@ -14,14 +14,14 @@
         <select id="status">
           {{#statuses}}
           <option>{{option}}</option>
-          {{/statuses}}{{status}}
+          {{/statuses}}
         </select>
       </p>
       <h2>Text:</h2>
       <p>{{text}}</p>
       <h2>Options</h2>
-      <button id="ok">Submit Changes</button>
-      <button id="remove">Remove</button>
+      <button id="ok">Submit</button>
+      <button id="delete">Delete</button>
     </div>
     <div id="otherDoc" style="float: right; display: none">
     </div>
@@ -29,6 +29,7 @@
   {{>scripts}}
   <script type="text/javascript" charset="utf-8">
     $.couch.app(function(app) {
+      var path = app.require("vendor/couchapp/lib/path").init(app.req);
       var doc = {{{doc}}},  // parse doc from string
         otherDoc = {}, // conflicting document
         sendMsg = function(msg) {
@@ -91,8 +92,14 @@
         }
       ; // END var
       delete doc._revisions;  // else: update conflict
-      $("#remove").click(function() {
-        $.log('remove clicked', doc);
+      $("#delete").click(function() {
+        if (confirm("Do you really want to delete this issue?")) {
+          app.db.removeDoc(doc, {
+            success: function() {
+              window.location = path.list('tabular', 'by_date');
+            }
+          });
+        }
       });
       $("#status")
       .val(doc.status)
