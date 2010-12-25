@@ -39,6 +39,15 @@
         $('option:contains('+doc.status+')', element).attr('selected','selected');
         if (with_options) {
           $(element).append(Mustache.to_html(app.ddoc.templates.partials.options));
+          $("#delete").click(function() {
+            if (confirm("Do you really want to delete this issue?") === true) {
+              app.db.removeDoc(currentDoc, {
+                success: function() {
+                  window.location = path.list('tabular', 'by_date');
+                }
+              });
+            }
+          });
         }
       },
       renderCurrentDoc = function() {
@@ -104,15 +113,6 @@
       }
     ; // END var
     delete currentDoc._revisions;  // else: update conflict
-    $("#delete").click(function() {
-      if (confirm("Do you really want to delete this issue?") === true) {
-        app.db.removeDoc(currentDoc, {
-          success: function() {
-            window.location = path.list('tabular', 'by_date');
-          }
-        });
-      }
-    });
     renderCurrentDoc();
   });
   </script>
