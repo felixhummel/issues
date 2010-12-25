@@ -7,7 +7,7 @@
 <body>
   <div id="msg"></div>
   <div id="thisDoc" style="float: left;"> </div>
-  <div id="otherDoc" style="float: right; display: none"> </div>
+  <div id="otherDoc" style="float: right"> </div>
 </body>
 {{>scripts}}
 <script type="text/javascript" charset="utf-8">
@@ -18,18 +18,12 @@
       otherDoc = {}, // conflicting document
       userChangedStuff = false,  // user changed some input field
       updateCurrentDocFromUserInput = function(parent_div) {
-        if (userChangedStuff) {
+        if (userChangedStuff === true) {
           currentDoc.status = $(".status", parent_div).val();
           currentDoc.text = $(".text", parent_div).val();
         }
       },
-      sendMsg = function(msg) {
-        $("#msg").hide().html(msg).fadeIn();
-      },
-      clearMsg = function() {
-        $("#msg").hide();
-      },
-      render_issue = function(doc, element, with_options) {
+      renderIssue = function(doc, element, with_options) {
         $.log('render', doc, element, with_options);
         var data = {
           created_at: doc.created_at,
@@ -49,8 +43,8 @@
           $(element).append(Mustache.to_html(app.ddoc.templates.partials.options));
         }
       },
-      init = function() {
-        render_issue(currentDoc, '#thisDoc', true);
+      renderCurrentDoc = function() {
+        renderIssue(currentDoc, '#thisDoc', true);
         $("#ok").click(function() {
           updateCurrentDocFromUserInput($("#thisDoc"));
           saveCurrentDoc();
@@ -66,23 +60,23 @@
         return r.split && r.split('-')[0] || 'undefined';
       },
       saveCurrentDoc = function() {
-        if (userChangedStuff === false) {
-          sendMsg('Nothing changed');
-        } else {
+        if (userChangedStuff === true) {
           app.db.saveDoc(currentDoc, {
             success: function(resp) {
               $("#rev").text(prettyRevision(resp.rev)); 
             },
             error: onConflict
           });
+          userChangedStuff = false;
         }
       },
       beforeMerge = function() {
         $("#options").hide();
       }
       afterMerge = function() {
-        init();
+        renderCurrentDoc();
         $("#options").show();
+        $("#otherDoc").empty();
       },
       onConflict = function(status, error, reason) {
         if (error == 'conflict') {
@@ -90,7 +84,8 @@
           // get other doc, display
           app.db.openDoc(currentDoc._id, {
             success: function(otherDoc) {
-              render_issue(otherDoc, '#otherDoc');
+              renderIssue(currentDoc, '#thisDoc');
+              renderIssue(otherDoc, '#otherDoc');
               $("#thisDoc").prepend('<button id="btnThis">Take this</button>');
               $("#otherDoc").prepend('<button id="btnThat">Take that</button>');
               // click handlers for THIS and OTHER
@@ -117,14 +112,11 @@
         } else {
           alert("Error " + reason)
         }
-      },
-      clearError = function() {
-        $("#otherDoc").html('');
       }
     ; // END var
     delete currentDoc._revisions;  // else: update conflict
     $("#delete").click(function() {
-      if (confirm("Do you really want to delete this issue?")) {
+      if (confirm("Do you really want to delete this issue?") === true) {
         app.db.removeDoc(currentDoc, {
           success: function() {
             window.location = path.list('tabular', 'by_date');
@@ -132,7 +124,7 @@
         });
       }
     });
-    init();
+    renderCurrentDoc();
   });
   </script>
 
