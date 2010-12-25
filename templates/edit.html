@@ -7,19 +7,7 @@
   <body>
     <p id="msg" stlye="display: none;"></p>
     <div id="thisDoc" style="float: left;">
-      <h1>Issue {{id}}, rev <span id="rev">{{rev}}</span></h1>
-      <h2>Created at</h2>
-      <p>{{created_at}}</p>
-      <h2>Status:</h2>
-      <p>
-        <select id="status">
-          {{#statuses}}
-          <option>{{option}}</option>
-          {{/statuses}}
-        </select>
-      </p>
-      <h2>Text:</h2>
-      <textarea id="text">{{text}}</textarea>
+      {{>issue}}
       <div id="options">
         <h2>Options</h2>
         <button id="ok">Submit</button>
@@ -33,21 +21,22 @@
   <script type="text/javascript" charset="utf-8">
     $.couch.app(function(app) {
       var path = app.require("vendor/couchapp/lib/path").init(app.req);
-      var doc = {{{doc}}},  // parse doc from string
+      var Mustache = app.require("lib/mustache");
+      var currentDoc = {{{doc}}},  // parse doc from string
         otherDoc = {}, // conflicting document
         userChangedStuff = false,  // user changed some input field
-        updateCurrentDocFromUserInput = function() {
+        updateCurrentDocFromUserInput = function(parent_div) {
           if (userChangedStuff) {
-            doc.status = $("#status").val();
-            doc.text = $("#text").val();
+            currentDoc.status = $(".status", parent_div).val();
+            currentDoc.text = $(".text", parent_div).val();
           }
         },
         prettyRev = function(r) {
           return r.split && r.split('-')[0] || 'undefined';
         },
-        saveCurrentDoc = function(errorHandler) {
-          var onError = errorHandler || conflictHandler;
-          app.db.saveDoc(doc, {
+        saveCurrentDoc = function() {
+          var onError = conflictHandler;
+          app.db.saveDoc(currentDoc, {
             success: function(resp) {
               $("#rev").text(prettyRev(resp.rev)); 
             },
@@ -65,34 +54,34 @@
           if (error == 'conflict') {
             beforeMerge();
             // get other doc, display
-            app.db.openDoc(doc._id, {
-              success: function(d) {
-                otherDoc = d;
-                // xxx refactor: use partial template to show doc
-                $('#otherDoc')
-                .html(
-                  '<h1>Issue '+otherDoc._id+', rev '+prettyRev(otherDoc._rev)+'</h1>'
-                  +'<h2>Created at</h2>'
-                  +'<p>'+otherDoc.created_at+'</p>'
-                  +'<h2>Status:</h2>'
-                  +'<select disabled="disabled"><option>'+otherDoc.status+'</select></option>'
-                  +'<h2>Text:</h2>'
-                  +'<textarea disabled="disabled">'+otherDoc.text+'</textarea>'
-                )
-                .show();
+            app.db.openDoc(currentDoc._id, {
+              success: function(otherDoc) {
+                var data = {
+                  created_at: otherDoc.created_at,
+                  status: otherDoc.status,
+                  id: otherDoc._id,
+                  text: otherDoc.text,
+                  rev: otherDoc._rev.split('-')[0],
+                  statuses: [
+                    { option: 'open' },
+                    { option: 'closed' }
+                  ]
+                }
+                $('#otherDoc').html(Mustache.to_html(app.ddoc.templates.partials.issue, data)).show();
                 $("#thisDoc").prepend('<button id="btnThis">Take this</button>');
                 $("#otherDoc").prepend('<button id="btnThat">Take that</button>');
                 // click handlers for THIS and OTHER
                 $("#btnThis").click(function() {
                   // take revision from other
-                  doc._rev = otherDoc._rev;
-                  updateCurrentDocFromUserInput();
+                  currentDoc._rev = otherDoc._rev;
+                  updateCurrentDocFromUserInput($("#thisDoc"));
                   saveCurrentDoc();
                   afterMerge();
                 });
                 $("#btnThat").click(function() {
                   // tries to save otherDoc
-                  doc = otherDoc;
+                  currentDoc = otherDoc;
+                  updateCurrentDocFromUserInput($("#otherDoc"));
                   // if yet another commit has been made we will recurse
                   saveCurrentDoc();
                   afterMerge();
@@ -110,27 +99,25 @@
           $("#otherDoc").html('');
         }
       ; // END var
-      delete doc._revisions;  // else: update conflict
+      delete currentDoc._revisions;  // else: update conflict
       $("#delete").click(function() {
         if (confirm("Do you really want to delete this issue?")) {
-          app.db.removeDoc(doc, {
+          app.db.removeDoc(currentDoc, {
             success: function() {
               window.location = path.list('tabular', 'by_date');
             }
           });
         }
       });
-      $("#status")
-      .val(doc.status)
-      .change(function() {
+      $("#thisDoc .status").val(currentDoc.status);
+      $(".status").change(function() {
         userChangedStuff = true;
       });
-      $("#text")
-      .change(function() {
+      $(".text").change(function() {
         userChangedStuff = true;
       });
       $("#ok").click(function() {
-        updateCurrentDocFromUserInput();
+        updateCurrentDocFromUserInput($("#thisDoc"));
         saveCurrentDoc();
       });
     });
