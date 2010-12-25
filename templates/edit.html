@@ -16,12 +16,9 @@
     var Mustache = app.require("lib/mustache");
     var currentDoc = {{{doc}}},  // parse doc from string
       otherDoc = {}, // conflicting document
-      userChangedStuff = false,  // user changed some input field
       updateCurrentDocFromUserInput = function(parent_div) {
-        if (userChangedStuff === true) {
-          currentDoc.status = $(".status", parent_div).val();
-          currentDoc.text = $(".text", parent_div).val();
-        }
+        currentDoc.status = $(".status", parent_div).val();
+        currentDoc.text = $(".text", parent_div).val();
       },
       renderIssue = function(doc, element, with_options) {
         $.log('render', doc, element, with_options);
@@ -39,6 +36,7 @@
         $(element).html(
           Mustache.to_html(app.ddoc.templates.partials.issue, data)
         );
+        $('option:contains('+doc.status+')', element).attr('selected','selected');
         if (with_options) {
           $(element).append(Mustache.to_html(app.ddoc.templates.partials.options));
         }
@@ -49,26 +47,17 @@
           updateCurrentDocFromUserInput($("#thisDoc"));
           saveCurrentDoc();
         });
-        $(".status").change(function() {
-          userChangedStuff = true;
-        });
-        $(".text").change(function() {
-          userChangedStuff = true;
-        });
       },
       prettyRevision = function(r) {
         return r.split && r.split('-')[0] || 'undefined';
       },
       saveCurrentDoc = function() {
-        if (userChangedStuff === true) {
-          app.db.saveDoc(currentDoc, {
-            success: function(resp) {
-              $("#rev").text(prettyRevision(resp.rev)); 
-            },
-            error: onConflict
-          });
-          userChangedStuff = false;
-        }
+        app.db.saveDoc(currentDoc, {
+          success: function(resp) {
+            $("#rev").text(prettyRevision(resp.rev)); 
+          },
+          error: onConflict
+        });
       },
       beforeMerge = function() {
         $("#options").hide();
@@ -90,7 +79,7 @@
               $("#otherDoc").prepend('<button id="btnThat">Take that</button>');
               // click handlers for THIS and OTHER
               $("#btnThis").click(function() {
-                // take revision from other
+                // take revision from otherDoc and save it
                 currentDoc._rev = otherDoc._rev;
                 updateCurrentDocFromUserInput($("#thisDoc"));
                 saveCurrentDoc();
