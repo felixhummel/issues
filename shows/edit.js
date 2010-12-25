@@ -9,17 +9,6 @@ function(doc, req) {
   };
   if (!doc) {
   } else {
-    data.issue = {
-      created_at: doc.created_at,
-      status: doc.status,
-      id: doc._id,
-      text: doc.text,
-      rev: doc._rev.split('-')[0],
-      statuses: [
-        { option: 'open' },
-        { option: 'closed' }
-      ]
-    };
     data.doc = JSON.stringify(doc);
     return Mustache.to_html(ddoc.templates.edit, data, ddoc.templates.partials);
   }

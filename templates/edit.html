@@ -5,30 +5,14 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
-    <div id="thisDoc" style="float: left;">
-      {{>issue}}
-      <div id="options">
-        <h2>Options</h2>
-        <button id="ok">Submit</button>
-        <button id="delete">Delete</button>
-      </div>
-    </div>
-    <div id="otherDoc" style="float: right; display: none">
-    </div>
+    <div id="thisDoc" style="float: left;"> </div>
+    <div id="otherDoc" style="float: right; display: none"> </div>
   </body>
   {{>scripts}}
   <script type="text/javascript" charset="utf-8">
     $.couch.app(function(app) {
       var path = app.require("vendor/couchapp/lib/path").init(app.req);
       var Mustache = app.require("lib/mustache");
-      var init = function() {
-        $("#thisDoc .status").val(currentDoc.status);
-        $("#thisDoc .text").val(currentDoc.text);
-        $("#ok").click(function() {
-          updateCurrentDocFromUserInput($("#thisDoc"));
-          saveCurrentDoc();
-        });
-      };
       var currentDoc = {{{doc}}},  // parse doc from string
         otherDoc = {}, // conflicting document
         userChangedStuff = false,  // user changed some input field
@@ -37,6 +21,31 @@
             currentDoc.status = $(".status", parent_div).val();
             currentDoc.text = $(".text", parent_div).val();
           }
+        },
+        render_issue = function(doc, element) {
+          $.log('render');
+          var data = {
+            created_at: doc.created_at,
+            status: doc.status,
+            id: doc._id,
+            text: doc.text,
+            rev: doc._rev.split('-')[0],
+            statuses: [
+              { option: 'open' },
+              { option: 'closed' }
+            ]
+          };
+          $(element).html(
+            Mustache.to_html(app.ddoc.templates.partials.issue, data)
+          );
+        },
+        init = function() {
+          $.log('init');
+          render_issue(currentDoc, '#thisDoc');
+          $("#ok").click(function() {
+            updateCurrentDocFromUserInput($("#thisDoc"));
+            saveCurrentDoc();
+          });
         },
         prettyRev = function(r) {
           return r.split && r.split('-')[0] || 'undefined';
