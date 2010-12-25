@@ -21,6 +21,14 @@
     $.couch.app(function(app) {
       var path = app.require("vendor/couchapp/lib/path").init(app.req);
       var Mustache = app.require("lib/mustache");
+      var init = function() {
+        $("#thisDoc .status").val(currentDoc.status);
+        $("#thisDoc .text").val(currentDoc.text);
+        $("#ok").click(function() {
+          updateCurrentDocFromUserInput($("#thisDoc"));
+          saveCurrentDoc();
+        });
+      };
       var currentDoc = {{{doc}}},  // parse doc from string
         otherDoc = {}, // conflicting document
         userChangedStuff = false,  // user changed some input field
@@ -34,22 +42,21 @@
           return r.split && r.split('-')[0] || 'undefined';
         },
         saveCurrentDoc = function() {
-          var onError = conflictHandler;
           app.db.saveDoc(currentDoc, {
             success: function(resp) {
               $("#rev").text(prettyRev(resp.rev)); 
             },
-            error: onError
+            error: onConflict
           });
         },
         beforeMerge = function() {
           $("#options").hide();
         }
         afterMerge = function() {
-          window.location.reload();
+          init();
           $("#options").show();
         },
-        conflictHandler = function(status, error, reason) {
+        onConflict = function(status, error, reason) {
           if (error == 'conflict') {
             beforeMerge();
             // get other doc, display
@@ -108,17 +115,13 @@
           });
         }
       });
-      $("#thisDoc .status").val(currentDoc.status);
       $(".status").change(function() {
         userChangedStuff = true;
       });
       $(".text").change(function() {
         userChangedStuff = true;
       });
-      $("#ok").click(function() {
-        updateCurrentDocFromUserInput($("#thisDoc"));
-        saveCurrentDoc();
-      });
+      init();
     });
   </script>
 
