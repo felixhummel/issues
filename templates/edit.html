@@ -12,16 +12,18 @@
 {{>scripts}}
 <script type="text/javascript" charset="utf-8">
   $.couch.app(function(app) {
+    // includes
     var path = app.require("vendor/couchapp/lib/path").init(app.req);
     var Mustache = app.require("lib/mustache");
-    var currentDoc = {{{doc}}},  // parse doc from string
-      otherDoc = {}, // conflicting document
-      updateCurrentDocFromUserInput = function(parent_div) {
+    var currentDoc = {{{doc}}}  // parse doc from string
+      ,otherDoc = {} // conflicting document
+      ,updateCurrentDocFromUserInput = function(parent_div) {
         currentDoc.status = $(".status", parent_div).val();
         currentDoc.text = $(".text", parent_div).val();
-      },
-      renderIssue = function(doc, element, with_options) {
+      }
+      ,renderIssue = function(doc, element, with_options) {
         $.log('render', doc, element, with_options);
+        // generate template data
         var data = {
           created_at: doc.created_at,
           status: doc.status,
@@ -33,10 +35,13 @@
             { option: 'closed' }
           ]
         };
+        // render it
         $(element).html(
           Mustache.to_html(app.ddoc.templates.partials.issue, data)
         );
+        // preselect current status
         $('option:contains('+doc.status+')', element).attr('selected','selected');
+        // for normal view we need default options, i.e. 'save' and 'remove'
         if (with_options) {
           $(element).append(Mustache.to_html(app.ddoc.templates.partials.options));
           $("#delete").click(function() {
@@ -49,44 +54,57 @@
             }
           });
         }
-      },
-      renderCurrentDoc = function() {
+      }
+      /**
+       * renders currentDoc with options
+       */
+      ,renderCurrentDoc = function() {
         renderIssue(currentDoc, '#thisDoc', true);
         $("#ok").click(function() {
           updateCurrentDocFromUserInput($("#thisDoc"));
           saveCurrentDoc();
         });
-      },
-      prettyRevision = function(r) {
+      }
+      /**
+       * expects a couchdb revision
+       * @return the human readable prefix
+       */
+      ,prettyRevision = function(r) {
         return r.split && r.split('-')[0] || 'undefined';
-      },
-      saveCurrentDoc = function() {
+      }
+      /**
+       * saves currentDoc to db and refreshes #rev;
+       * connects conflict handler
+       */
+      ,saveCurrentDoc = function() {
         app.db.saveDoc(currentDoc, {
           success: function(resp) {
             $("#rev").text(prettyRevision(resp.rev)); 
           },
           error: onConflict
         });
-      },
-      beforeMerge = function() {
+      }
+      ,beforeMerge = function() {
         $("#options").hide();
       }
       afterMerge = function() {
         renderCurrentDoc();
         $("#options").show();
         $("#otherDoc").empty();
-      },
-      onConflict = function(status, error, reason) {
+      }
+      ,onConflict = function(status, error, reason) {
         if (error == 'conflict') {
           beforeMerge();
           // get other doc, display
           app.db.openDoc(currentDoc._id, {
             success: function(otherDoc) {
+              // render documents side by side
               renderIssue(currentDoc, '#thisDoc');
               renderIssue(otherDoc, '#otherDoc');
+              // add action buttons
               $("#thisDoc").prepend('<button id="btnThis">Take this</button>');
               $("#otherDoc").prepend('<button id="btnThat">Take that</button>');
-              // click handlers for THIS and OTHER
+              // add click handlers
               $("#btnThis").click(function() {
                 // take revision from otherDoc and save it
                 currentDoc._rev = otherDoc._rev;
@@ -104,7 +122,7 @@
               });
             },
             error: function() {
-              alert('Error getting other document');
+              alert('Error getting other document. Are you online? Is the server available and CouchDB running?');
             }
           });
         } else {
@@ -112,8 +130,11 @@
         }
       }
     ; // END var
+
+    // initial
     delete currentDoc._revisions;  // else: update conflict
     renderCurrentDoc();
+
   });
   </script>
 
