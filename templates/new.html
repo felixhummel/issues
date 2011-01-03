@@ -18,27 +18,23 @@
 <script type="text/javascript" charset="utf-8">
   $.couch.app(function(app) {
     // includes
-      $.log(app.ddoc.conf.default_status);
     var path = app.require("vendor/couchapp/lib/path").init(app.req);
     var Mustache = app.require("lib/mustache");
     $.log('hi');
     $('#ok').click(function() {
       var doc = {
+        type: 'issue',
         _id: $('#name').val(),
         text: $('#text').val(),
         assigned_to: $('#assigned_to').val(),
-        status: 'open',
-
+        status: app.ddoc.conf.default_status,
+        created_at: new Date()
       };
-      $.log('doc:', doc);
-      /*
       app.db.saveDoc(doc, {
         success: function(resp) {
-          $("#rev").text(prettyRevision(resp.rev)); 
-        },
-        error: onConflict
+          window.location = path.list('tabular', 'by_date', {descending: true});
+        }
       });
-      */
     });
   });
 </script>
