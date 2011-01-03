@@ -1,0 +1,7 @@
+{
+  "statuses": [
+    { "option": "open" },
+    { "option": "closed" }
+  ],
+  "default_status": "open"
+}

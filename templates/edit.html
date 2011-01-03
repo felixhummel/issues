@@ -30,10 +30,7 @@
           id: doc._id,
           text: doc.text,
           rev: prettyRevision(doc._rev),
-          statuses: [
-            { option: 'open' },
-            { option: 'closed' }
-          ]
+          statuses: app.ddoc.conf.statuses
         };
         // render it
         $(element).html(

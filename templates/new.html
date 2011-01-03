@@ -18,12 +18,27 @@
 <script type="text/javascript" charset="utf-8">
   $.couch.app(function(app) {
     // includes
+      $.log(app.ddoc.conf.default_status);
     var path = app.require("vendor/couchapp/lib/path").init(app.req);
     var Mustache = app.require("lib/mustache");
     $.log('hi');
     $('#ok').click(function() {
-      $.log('ok clicked');
-      $.log('data', $('#name').val(), $('#text').val(), $('#assigned_to').val());
+      var doc = {
+        _id: $('#name').val(),
+        text: $('#text').val(),
+        assigned_to: $('#assigned_to').val(),
+        status: 'open',
+
+      };
+      $.log('doc:', doc);
+      /*
+      app.db.saveDoc(doc, {
+        success: function(resp) {
+          $("#rev").text(prettyRevision(resp.rev)); 
+        },
+        error: onConflict
+      });
+      */
     });
   });
 </script>
