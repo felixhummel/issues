@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Issues - New</title>
+  <link rel="stylesheet" href="css/main.css" type="text/css">
+</head>
+<body>
+  <h1>Create New Issue</h1>
+  <h2>Name:</h2>
+  <input type="text" id="name"></input>
+  <h2>Text:</h2>
+  <textarea id="text"></textarea>
+  <h2>Assigned To:</h2>
+  <input type="text" id="assigned_to"></input>
+  <p><button id="ok">OK</button></p>
+</body>
+{{>scripts}}
+<script type="text/javascript" charset="utf-8">
+  $.couch.app(function(app) {
+    // includes
+    var path = app.require("vendor/couchapp/lib/path").init(app.req);
+    var Mustache = app.require("lib/mustache");
+    $.log('hi');
+    $('#ok').click(function() {
+      $.log('ok clicked');
+      $.log('data', $('#name').val(), $('#text').val(), $('#assigned_to').val());
+    });
+  });
+</script>
+
+</html>
+
