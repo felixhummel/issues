@@ -20,6 +20,7 @@
       ,updateCurrentDocFromUserInput = function(parent_div) {
         currentDoc.status = $(".status", parent_div).val();
         currentDoc.text = $(".text", parent_div).val();
+        currentDoc.assigned_to = $(".assigned_to", parent_div).val();
       }
       ,renderIssue = function(doc, element, with_options) {
         $.log('render', doc, element, with_options);
@@ -30,7 +31,8 @@
           id: doc._id,
           text: doc.text,
           rev: prettyRevision(doc._rev),
-          statuses: app.ddoc.conf.statuses
+          statuses: app.ddoc.conf.statuses,
+          assigned_to: doc.assigned_to
         };
         // render it
         $(element).html(
@@ -41,6 +43,7 @@
         // for normal view we need default options, i.e. 'save' and 'remove'
         if (with_options) {
           $(element).append(Mustache.to_html(app.ddoc.templates.partials.options));
+          // this will fail without authentication
           $("#delete").click(function() {
             if (confirm("Do you really want to delete this issue?") === true) {
               app.db.removeDoc(currentDoc, {
@@ -89,6 +92,9 @@
         $("#options").show();
         $("#otherDoc").empty();
       }
+      /**
+       * displays currentDoc and otherDoc side by side
+       */
       ,onConflict = function(status, error, reason) {
         if (error == 'conflict') {
           beforeMerge();
