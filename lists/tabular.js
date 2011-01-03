@@ -4,7 +4,15 @@ function(head, req) {
   var List = require("vendor/couchapp/lib/list");
   var path = require("vendor/couchapp/lib/path").init(req);
 
-  var issues = [];
+  var data = {
+    issues: [],
+    all: path.list('tabular', 'by_date', { descending: true }),
+    open: path.list('tabular', 'status', {
+      descending: true,
+      startkey: ['open',{}],
+      endkey: ['open']
+    })
+  };
   provides("html", function() {
     start({
       "headers": {
@@ -12,8 +20,8 @@ function(head, req) {
       }
     });
     while(row = getRow()) {
-      issues.push(row.value);
+      data.issues.push(row.value);
     }
-    return Mustache.to_html(ddoc.templates.tabular, {issues: issues});
+    return Mustache.to_html(ddoc.templates.tabular, data);
   });
 }

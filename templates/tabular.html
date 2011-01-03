@@ -5,10 +5,26 @@
     <link rel="stylesheet" href="css/main.css" type="text/css">
   </head>
   <body>
+    <ol id="navigation">
+      <li><a href="{{all}}">All</a></li>
+      <li><a href="{{open}}">Open</a></li>
+    </ol>
     <table>
-      <tr><th>When</th><th>What</th><th>Status</th></tr>
+      <tr>
+        <th>ID</th>
+        <th>When</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Assigned To</th>
+      </tr>
       {{#issues}}
-      <tr><td>{{created_at}}</td><td>{{text}}</td><td>{{status}}</td></tr>
+      <tr>
+        <td>{{_id}}</td>
+        <td>{{created_at}}</td>
+        <td>{{text}}</td>
+        <td>{{status}}</td>
+        <td>{{assigned_to}}</td>
+      </tr>
       {{/issues}}
     </table>
   </body>
