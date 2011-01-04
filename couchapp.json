@@ -1,0 +1,11 @@
+{
+  "name": "Couchapp with issues",
+  "description": "a minimalistic Spolsky style issue tracker",
+  "index" : "_list/tabular/by_date",
+  "load" : {
+    "app" : [
+      "lib",
+      "vendor/couchapp/lib/mustache"
+    ]
+  }
+}
