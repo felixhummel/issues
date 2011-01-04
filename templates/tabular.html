@@ -2,12 +2,24 @@
 <html>
   <head>
     <title>Issues</title>
-    <link rel="stylesheet" href="css/main.css" type="text/css">
+    <link rel="stylesheet" href="../../css/main.css" type="text/css" media="screen">
+    <style type="text/css" media="screen">
+      table,td {
+        border: 1px solid #DDD;
+        border-collapse: collapse;
+        padding: 5px;
+      }
+      .linked:hover {
+        background: #CCC;
+        cursor: pointer;
+      }
+    </style>
   </head>
   <body>
     <ol id="navigation">
-      <li><a href="{{all}}">All</a></li>
-      <li><a href="{{open}}">Open</a></li>
+      <li><a href="{{link2new}}">New</a></li>
+      <li><a href="{{link2all}}">All</a></li>
+      <li><a href="{{link2open}}">Open</a></li>
     </ol>
     <table>
       <tr>
@@ -18,7 +30,7 @@
         <th>Assigned To</th>
       </tr>
       {{#issues}}
-      <tr>
+      <tr class="linked" onclick="document.location.href = '{{edit_link}}'">
         <td>{{_id}}</td>
         <td>{{created_at}}</td>
         <td>{{text}}</td>
@@ -28,4 +40,6 @@
       {{/issues}}
     </table>
   </body>
+  <script type="text/javascript" charset="utf-8">
+  </script>
 </html>

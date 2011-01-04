@@ -5,7 +5,7 @@ function(doc, req) {
 
   // create empty objects for partials
   var data = {
-    scripts: {},
+    scripts: { root: path.asset() },
     issue: {}
   };
   if (doc) {

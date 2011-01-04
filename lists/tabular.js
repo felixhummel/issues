@@ -6,12 +6,13 @@ function(head, req) {
 
   var data = {
     issues: [],
-    all: path.list('tabular', 'by_date', { descending: true }),
-    open: path.list('tabular', 'status', {
+    link2all: path.list('tabular', 'by_date', { descending: true }),
+    link2open: path.list('tabular', 'status', {
       descending: true,
       startkey: ['open',{}],
       endkey: ['open']
-    })
+    }),
+    link2new: path.show('new')
   };
   provides("html", function() {
     start({
@@ -20,7 +21,9 @@ function(head, req) {
       }
     });
     while(row = getRow()) {
-      data.issues.push(row.value);
+      var issue = row.value;
+      issue.edit_link = path.show('edit', issue._id);
+      data.issues.push(issue);
     }
     return Mustache.to_html(ddoc.templates.tabular, data);
   });
