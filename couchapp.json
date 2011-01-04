@@ -1,7 +1,7 @@
 {
   "name": "Couchapp with issues",
   "description": "a minimalistic Spolsky style issue tracker",
-  "index" : "_list/tabular/by_date",
+  "index" : "_list/tabular/by_date?descending=true",
   "load" : {
     "app" : [
       "lib",
