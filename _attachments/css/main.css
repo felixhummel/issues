@@ -4,14 +4,14 @@ body {
   padding:4px;
 }
 h1 {
-  margin:0;
-  margin-top: 10px;
-  margin-left: 10px;
   font-size: 20px;
 }
 h1 a {
   color:#3E83C9;
   text-decoration:none;
+}
+h2 {
+  font-size: 16px;
 }
 form ol {
   padding: 0;
