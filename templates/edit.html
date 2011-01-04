@@ -48,7 +48,7 @@
             if (confirm("Do you really want to delete this issue?") === true) {
               app.db.removeDoc(currentDoc, {
                 success: function() {
-                  window.location = path.list('tabular', 'by_date');
+                  window.location = path.list('tabular', 'by_date', {descending: true});
                 }
               });
             }
@@ -79,7 +79,8 @@
       ,saveCurrentDoc = function() {
         app.db.saveDoc(currentDoc, {
           success: function(resp) {
-            $("#rev").text(prettyRevision(resp.rev)); 
+            //$("#rev").text(prettyRevision(resp.rev));
+            window.location = path.list('tabular', 'by_date', {descending: true});
           },
           error: onConflict
         });
@@ -135,10 +136,7 @@
     ; // END var
 
     // initial
-    if (!currentDoc) {
-    }
     renderSingleIssue();
-
   });
   </script>
 
