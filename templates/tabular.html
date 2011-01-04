@@ -20,6 +20,7 @@
       <li><a href="{{link2new}}">New</a></li>
       <li><a href="{{link2all}}">All</a></li>
       <li><a href="{{link2open}}">Open</a></li>
+      <li><a href="{{link2closed}}">Closed</a></li>
     </ol>
     <table>
       <tr>
@@ -36,6 +37,11 @@
         <td>{{text}}</td>
         <td>{{status}}</td>
         <td>{{assigned_to}}</td>
+      </tr>
+      {{/issues}}
+      {{^issues}}
+      <tr>
+        <td colspan="5">Click new to create!</td>
       </tr>
       {{/issues}}
     </table>

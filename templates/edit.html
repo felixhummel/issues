@@ -13,7 +13,7 @@
   $.couch.app(function(app) {
     // includes
     var path = app.require("vendor/couchapp/lib/path").init(app.req);
-    var Mustache = app.require("lib/mustache");
+    var Mustache = app.require("vendor/couchapp/lib/mustache");
     $.log('required libs loaded');
     var currentDoc = {{{doc}}}  // parse doc from string
       ,otherDoc = {} // conflicting document

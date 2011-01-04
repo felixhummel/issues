@@ -1,6 +1,6 @@
 function(head, req) {
   ddoc = this;
-  var Mustache = require("lib/mustache");
+  var mustache = require("vendor/couchapp/lib/mustache");
   var List = require("vendor/couchapp/lib/list");
   var path = require("vendor/couchapp/lib/path").init(req);
 
@@ -11,6 +11,11 @@ function(head, req) {
       descending: true,
       startkey: ['open',{}],
       endkey: ['open']
+    }),
+    link2closed: path.list('tabular', 'status', {
+      descending: true,
+      startkey: ['closed',{}],
+      endkey: ['closed']
     }),
     link2new: path.show('new')
   };
@@ -25,6 +30,6 @@ function(head, req) {
       issue.edit_link = path.show('edit', issue._id);
       data.issues.push(issue);
     }
-    return Mustache.to_html(ddoc.templates.tabular, data);
+    return mustache.to_html(ddoc.templates.tabular, data, ddoc.templates.partials);
   });
 }

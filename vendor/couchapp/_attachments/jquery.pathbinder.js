@@ -14,6 +14,7 @@
     _currentPath = getPath();
     // if path is actually changed from what we thought it was, then react
     if (_lastPath != _currentPath) {
+      _lastPath = _currentPath;
       return triggerOnPath(_currentPath);
     }
   }
@@ -38,6 +39,9 @@
       goPath(path);
       triggerOnPath(path);
     },
+    currentPath : function() {
+      return getPath();
+    },
     onChange : function (fun) {
       $.pathbinder.changeFuns.push(fun);
     }
@@ -61,6 +65,7 @@
   }
 
   function triggerOnPath(path) {
+    path = path.replace(/^#/,'');
     $.pathbinder.changeFuns.forEach(function(fun) {fun(path)});
     var pathSpec, path_params, params = {}, param_name, param;
     for (var i=0; i < $.pathbinder.paths.length; i++) {
@@ -106,8 +111,10 @@
   };
   
   function goPath(newPath) {
-    // $.log("goPath", newPath)
-    window.location = '#'+newPath;
+    if (newPath) {
+      // $.log("goPath", newPath)
+      window.location = '#'+newPath;
+    }
     _lastPath = getPath();
   };
   
@@ -128,7 +135,7 @@
 
     return {
       param_names : param_names,
-      matcher : new RegExp(path.replace(
+      matcher : new RegExp("^" + path.replace(
         PATH_NAME_MATCHER, PATH_REPLACER).replace(
         SPLAT_MATCHER, SPLAT_REPLACER) + "/?$"),
       template : path.replace(PATH_NAME_MATCHER, function(a, b) {
