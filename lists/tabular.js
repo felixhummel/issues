@@ -5,6 +5,7 @@ function(head, req) {
   var path = require("vendor/couchapp/lib/path").init(req);
 
   var data = {
+    scripts: { root: path.asset() },
     issues: [],
     link2all: path.list('tabular', 'by_date', { descending: true }),
     link2open: path.list('tabular', 'status', {

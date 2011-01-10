@@ -45,5 +45,62 @@
       </tr>
       {{/issues}}
     </table>
+    <label for="replication_target">Replicate: </label><input type="text" id="replication_target" name="replication_target" />
   </body>
+  {{>scripts}}
+  <script type="text/javascript" charset="utf-8">
+    $.couch.app(function(app) {
+      // includes
+      var path = app.require("vendor/couchapp/lib/path").init(app.req);
+      // http://groups.google.com/group/couchapp/browse_thread/thread/217c4efe30dbd47a
+      var push_id, pull_id;
+      var src = app.db.name;
+      var target_input = $("#replication_target");
+      // handle enter press on target input
+      function errlog() {
+        $.log(arguments);
+      };
+      target_input.keypress(function(e) {
+        if (e.which == '13') {
+          var target = target_input.val();
+          $.couch.replicate(src, target, {
+              success: function(response) {
+                push_id = response._local_id;
+              },
+              error: errlog
+            }, {
+              continuous: true
+          });
+          $.couch.replicate(target, src, {
+              success: function(response) {
+                pull_id = response._local_id;
+                $("#replication_target").after('<button id="cancel_replication">Cancel</button>');
+                $("#cancel_replication").click(function() {
+                  if (! (push_id && pull_id) ) {
+                    alert('Fail');
+                  } else {
+                    $.couch.replicate(src, target, {
+                        error: errlog
+                      }, {
+                        cancel: true,
+                        continuous: true
+                    });
+                    $.couch.replicate(target, src, {
+                        error: errlog
+                      }, {
+                        cancel: true,
+                        continuous: true
+                    });
+                  }
+                });
+              },
+              error: errlog
+            }, {
+              continuous: true
+          });
+        }
+      });
+    });
+    </script>
+
 </html>
