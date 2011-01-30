@@ -56,10 +56,10 @@
       var push_id, pull_id;
       var src = app.db.name;
       var target_input = $("#replication_target");
-      // handle enter press on target input
-      function errlog() {
+      var errlog = function() {
         $.log(arguments);
       };
+      // handle enter press on target input
       target_input.keypress(function(e) {
         if (e.which == '13') {
           var target = target_input.val();
