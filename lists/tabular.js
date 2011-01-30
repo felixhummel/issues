@@ -1,7 +1,6 @@
 function(head, req) {
   ddoc = this;
   var mustache = require("vendor/couchapp/lib/mustache");
-  var List = require("vendor/couchapp/lib/list");
   var path = require("vendor/couchapp/lib/path").init(req);
 
   var data = {
