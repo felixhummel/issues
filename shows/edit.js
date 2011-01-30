@@ -2,10 +2,11 @@ function(doc, req) {
   var ddoc = this;
   var mustache = require("vendor/couchapp/lib/mustache");
   var path = require("vendor/couchapp/lib/path").init(req);
+  var root = { root: path.asset() };
 
-  // create empty objects for partials
   var data = {
-    scripts: { root: path.asset() },
+    styles: root,
+    scripts: root,
     issue: {}
   };
   if (doc) {

@@ -2,9 +2,11 @@ function(head, req) {
   ddoc = this;
   var mustache = require("vendor/couchapp/lib/mustache");
   var path = require("vendor/couchapp/lib/path").init(req);
+  var root = { root: path.asset() };
 
   var data = {
-    scripts: { root: path.asset() },
+    styles: root,
+    scripts: root,
     issues: [],
     link2all: path.list('tabular', 'by_date', { descending: true }),
     link2open: path.list('tabular', 'status', {

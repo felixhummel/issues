@@ -5,6 +5,7 @@ function(doc, req) {
   // create empty objects for partials
   var root = { root: path.asset() };
   var data = {
+    styles: root,
     scripts: root,
     css: root
   };
