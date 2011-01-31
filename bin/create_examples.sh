@@ -1,11 +1,5 @@
 #!/bin/bash
 
-echo "Deleting DB"
-curl -X DELETE http://admin:admin@127.0.0.1:5984/issues
-
-echo "Creating DB"
-curl -X PUT http://admin:admin@127.0.0.1:5984/issues
-
 curl -X PUT http://admin:admin@127.0.0.1:5984/issues/example1 -d '{"text": "open/user1",
                                                                    "status": "open",
                                                                    "assigned_to": "user1",
