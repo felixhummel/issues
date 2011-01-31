@@ -3,6 +3,7 @@
   ".*~$",
   "\\.hg.*",
   "bin.*",
-  "NOTES"
+  "NOTES",
+  "Makefile"
 ]
 
